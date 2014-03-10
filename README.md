@@ -16,10 +16,10 @@ From this data you must compute the average time spent in each room, and how man
  
  Output Description 
 
- For each room that had log data associated with it, print the room index (starting at 0), then print the average length of time visitors have stayed as an integer (round down), and then finally print the total number of visitors in the room. All of this should be on the same line and be space delimited; you may optionally include labels on this text, like in our sample output 1.
- Sample Inputs & Outputs
+For each room that had log data associated with it, print the room index (starting at 0), then print the average length of time visitors have stayed as an integer (round down), and then finally print the total number of visitors in the room. All of this should be on the same line and be space delimited; you may optionally include labels on this text, like in our sample output 1.
+Sample Inputs & Outputs
 
- Sample Input 1 
+Sample Input 1 
 
 * 4
 * 0 0 I 540
