@@ -96,253 +96,49 @@ Solution
 Assumptions
 ----------
 
-* There are possibly 2 sources of data one already existing in memory and other in the external file "log.txt" which is in the same directory.
+* There are possibly 2 sources of data one already existing in memory and other in the external file "log.txt" which is   in the same directory.
 * All the data is in the prescribed format so no validation of data is done.
-* There will always a checkin prior to chekout so no need to check if data corresponds to checkin or checkout reason being
-  if there exists a room entry corresponding to the visitor then the first one will be the checkin corresponding to the room.
+* There will always a checkin prior to chekout so no need to check if data corresponds to checkin or checkout reason
+  being if there exists a room entry corresponding to the visitor then the first one will be the checkin corresponding
+  to the room.
   
 
 Installation
 -------------
-ru
 
 
-To use a stable build of Spree, you can manually add Spree to your
-Rails 4.0.x application. To use the 2-1-stable branch of Spree, add this line to
-your Gemfile.
+Environment
+
+* To use this build, you need Ruby 2.0.0
+
+
+Executing
+-----------
+
+After installing ruby
+
+* Copy the entire structure in a folder. Basically 2 files need to be there problem.rb and log.txt 
+* After copyiny these two files execute the following command
 
 ```ruby
-gem 'spree', github: 'spree/spree', branch: '2-1-stable'
+ruby problem.rb log.txt
 ```
 
-Alternatively, if you want to use the bleeding edge version of Spree, use this
+Alternatively, if you want to run in memory mode 
 line:
 
 ```ruby
-gem 'spree', github: 'spree/spree'
+ruby problem.rb 
 ```
 
-
-
-If you wish to have authentication included also, you will need to add the
-`spree_auth_devise` gem as well. Either this:
-
-```ruby
-gem 'spree_auth_devise', github: 'spree/spree_auth_devise', branch: '2-1-stable'
-```
-
-Or this:
-
-```ruby
-gem 'spree_auth_devise', github: 'spree/spree_auth_devise'
-```
-
-Once you've done that, then you can install these gems using this command:
-
-```shell
-bundle install
-```
-
-Use the install generator to set up Spree:
-
-```shell
-rails g spree:install --sample=false --seed=false
-```
-
-At this point, if you are using spree_auth_devise you will need to change this
-line in `config/initializers/spree.rb`:
-
-```ruby
-Spree.user_class = "Spree::LegacyUser"
-```
-
-To this:
-
-```ruby
-Spree.user_class = "Spree::User"
-```
-
-You can avoid running migrations or generating seed and sample data by passing
-in these flags:
-
-```shell
-rails g spree:install --migrate=false --sample=false --seed=false
-```
-
-You can always perform the steps later by using these commands.
-
-```shell
-bundle exec rake railties:install:migrations
-bundle exec rake db:migrate
-bundle exec rake db:seed
-bundle exec rake spree_sample:load
-```
-
-Browse Store
-------------
-
-http://localhost:nnnn
-
-Browse Admin Interface
-----------------------
-
-http://localhost:nnnn/admin
-
-
-
-Working with the edge source (latest and greatest features)
------------------------------------------------------------
-
-The source code is essentially a collection of gems. Spree is meant to be run
-within the context of Rails application. You can easily create a sandbox
-application inside of your cloned source directory for testing purposes.
-
-
-1. Clone the Git repo
-
-```shell
-git clone git://github.com/spree/spree.git
-cd spree
-```
-
-2. Install the gem dependencies
-
-```shell
-bundle install
-```
-
-3. Create a sandbox Rails application for testing purposes (and automatically
-perform all necessary database setup)
-
-```shell
-bundle exec rake sandbox
-```
-
-4. Start the server
-
-```shell
-cd sandbox
-rails server
-```
-
-Performance
------------
-
-You may notice that your Spree store runs slowly in development mode.  This is
-a side-effect of how Rails works in development mode which is to continuously reload
-your Ruby objects on each request.  The introduction of the asset pipeline in
-Rails 3.1 made default performance in development mode significantly worse. There
-are, however, a few tricks to speeding up performance in development mode.
-
-You can precompile your assets as follows:
-
-```shell
-bundle exec rake assets:precompile:nondigest
-```
-
-If you want to remove precompiled assets (recommended before you commit to Git
-and push your changes) use the following rake task:
-
-```shell
-bundle exec rake assets:clean
-```
-
-Use Dedicated Spree Devise Authentication
------------------------------------------
-Add the following to your Gemfile
-
-```ruby
-gem 'spree_auth_devise', github: 'spree/spree_auth_devise'
-```
-
-Then run `bundle install`. Authentication will then work exactly as it did in
-previous versions of Spree.
-
-This line is automatically added by the `spree install` command.
-
-If you're installing this in a new Spree 1.2+ application, you'll need to install
-and run the migrations with
-
-```shell
-bundle exec rake spree_auth:install:migrations
-bundle exec rake db:migrate
-```
-
-change the following line in `config/initializers/spree.rb`
-```ruby
-Spree.user_class = 'Spree::LegacyUser'
-```
-to
-```ruby
-Spree.user_class = 'Spree::User'
-```
-
-In order to set up the admin user for the application you should then run:
-
-```shell
-bundle exec rake spree_auth:admin:create
-```
-
-Running Tests
--------------
-
-[![Team City](http://www.jetbrains.com/img/logos/logo_teamcity_small.gif)](http://www.jetbrains.com/teamcity)
-
-We use [TeamCity](http://www.jetbrains.com/teamcity/) to run the tests for Spree.
-
-You can see the build statuses at [http://ci.spree.fm](http://ci.spree.fm/guestLogin.html?guest=1).
-
----
-
-Each gem contains its own series of tests, and for each directory, you need to
-do a quick one-time creation of a test application and then you can use it to run
-the tests.  For example, to run the tests for the core project.
-```shell
-cd core
-bundle exec rake test_app
-bundle exec rspec spec
-```
-
-If you would like to run specs against a particular database you may specify the
-dummy apps database, which defaults to sqlite3.
-```shell
-DB=postgres bundle exec rake test_app
-```
-
-If you want to run specs for only a single spec file
-```shell
-bundle exec rspec spec/models/state_spec.rb
-```
-
-If you want to run a particular line of spec
-```shell
-bundle exec rspec spec/models/state_spec.rb:7
-```
-
-You can also enable fail fast in order to stop tests at the first failure
-```shell
-FAIL_FAST=true bundle exec rspec spec/models/state_spec.rb
-```
-
-If you want to run the simplecov code coverage report
-```shell
-COVERAGE=true bundle exec rspec spec
-```
-
-If you're working on multiple facets of Spree, you may want
-to run this command at the root of the Spree project to
-generate test applications and run specs for all the facets:
-```shell
-bash build.sh
-```
 
 Further Documentation
-------------
-Spree has a number of really useful guides online at [http://guides.spreecommerce.com](http://guides.spreecommerce.com). 
+--------------------
+
+Further documentation can be found in the doc folder.
+ 
 
 Contributing
 ------------
 
-Spree is an open source project and we encourage contributions. Please see the
-[contributors guidelines](http://spreecommerce.com/documentation/contributing_to_spree.html)
-before contributing.
+Please feel free to modify the code. This is just a demo example of using oops in ruby.
